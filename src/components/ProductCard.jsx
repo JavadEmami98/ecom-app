@@ -1,6 +1,17 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { addToCart } from "../store/cartSlice";
 
 function ProductCard({ product }) {
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));
+    toast.success("محصول به سبد خرید اضافه شد.");
+  };
+
   return (
     <div className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white text-left shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-xl">
       <div className="flex h-52 items-center justify-center bg-gray-50 p-5">
@@ -29,11 +40,23 @@ function ProductCard({ product }) {
           {product.description}
         </p>
 
-        <div className="mt-2 flex items-center justify-between border-t border-gray-100 pt-4">
+        <div className="mt-2 flex items-center justify-between gap-2 border-t border-gray-100 pt-4">
           <p className="text-lg font-bold text-gray-950">${product.price}</p>
-          <button className="rounded-md bg-gray-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-600">
-            Add to cart
-          </button>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              className="rounded-md border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-emerald-500 hover:text-emerald-600"
+            >
+              Add
+            </button>
+            <Link
+              to={`/products/${product.id}`}
+              className="rounded-md bg-gray-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-600"
+            >
+              Details
+            </Link>
+          </div>
         </div>
       </div>
     </div>
