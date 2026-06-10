@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authSlice";
 import cartReducer from "./cartSlice";
+import themeReducer from "./themeSlice";
 
 const loadAuthState = () => {
   try {
@@ -68,6 +69,7 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     cart: cartReducer,
+    theme: themeReducer,
   },
   preloadedState: {
     ...(persistedAuthState ? { auth: persistedAuthState } : {}),

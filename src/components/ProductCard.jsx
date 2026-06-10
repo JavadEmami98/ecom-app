@@ -13,6 +13,7 @@ function ProductCard({ product }) {
   };
 
   return (
+    
     <div className="group flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white text-left shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-xl">
       <div className="flex h-52 items-center justify-center bg-gray-50 p-5">
         <img

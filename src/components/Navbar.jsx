@@ -1,12 +1,14 @@
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../store/authSlice";
+import { toggleTheme } from "../store/themeSlice";
 
 function Navbar() {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const themeMode = useSelector((state) => state.theme.mode);
   const cartItemsCount = useSelector((state) =>
     state.cart.items.reduce((total, item) => total + item.quantity, 0),
   );
@@ -28,37 +30,48 @@ function Navbar() {
         <Link to="/checkout" className="relative">
           سبد خرید
           {cartItemsCount > 0 && (
-            <span className="absolute -right-4 -top-3 flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-600 px-1 text-xs font-bold text-white">
+            <span className="absolute -right-4 -top-3 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-xs font-bold text-white">
               {cartItemsCount}
             </span>
           )}
         </Link>
       </div>
 
-      {isAuthenticated ? (
-        <div className="flex items-center gap-3">
-          <span className="max-w-40 truncate text-sm text-gray-600">
-            {user?.email}
-          </span>
-          <Button variant="outlined" onClick={() => dispatch(logout())}>
-            خروج
-          </Button>
-        </div>
-      ) : (
-        <div className="flex gap-5">
-          <Link to="/auth?mode=login">
-            <Button
-              sx={{ display: "flex", alignItems: "center" }}
-              variant="contained"
-            >
-              ورود
+      <div className="flex items-center gap-3">
+        {/* دکمه تغییر تم */}
+        <IconButton
+          onClick={() => dispatch(toggleTheme())}
+          title={themeMode === "light" ? "تم تاریک" : "تم روشن"}
+          sx={{ fontSize: "1.4rem" }}
+        >
+          {themeMode === "light" ? "🌙" : "☀️"}
+        </IconButton>
+
+        {isAuthenticated ? (
+          <>
+            <span className="max-w-40 truncate text-sm text-gray-600">
+              {user?.email}
+            </span>
+            <Button variant="outlined" onClick={() => dispatch(logout())}>
+              خروج
             </Button>
-          </Link>
-          <Link to="/auth?mode=signup">
-            <Button variant="outlined">ثبت نام</Button>
-          </Link>
-        </div>
-      )}
+          </>
+        ) : (
+          <div className="flex gap-5">
+            <Link to="/auth?mode=login">
+              <Button
+                sx={{ display: "flex", alignItems: "center", bgcolor: "black" }}
+                variant="contained"
+              >
+                ورود
+              </Button>
+            </Link>
+            <Link to="/auth?mode=signup">
+              <Button variant="outlined">ثبت نام</Button>
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
