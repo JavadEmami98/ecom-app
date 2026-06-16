@@ -1,5 +1,6 @@
 import React from "react";
 import ProductGrid from "../components/ProductGrid";
+import ProductSwiper from "../components/Swiper/ProductSwiper";
 
 function Home() {
   return (
@@ -14,6 +15,9 @@ function Home() {
         </div>
         <div className="flex mt-[80px] justify-start w-full text-2xl">
           محصولات
+        </div>
+        <div className="w-full">
+          <ProductSwiper />
         </div>
         <div className="bg-white dark:bg-slate-800 dark:border-slate-600">
           <ProductGrid />
