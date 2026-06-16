@@ -2,6 +2,29 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
+  Container,
+  Box,
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  IconButton,
+  Chip,
+  Divider,
+  Paper,
+  ButtonGroup,
+} from "@mui/material";
+import {
+  ShoppingCartOutlined,
+  Delete,
+  Add,
+  Remove,
+  ArrowBack,
+  Payment,
+  DeleteSweep,
+} from "@mui/icons-material";
+import {
   clearCart,
   decreaseQuantity,
   increaseQuantity,
@@ -11,6 +34,7 @@ import {
 function Checkout() {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.items);
+  const themeMode = useSelector((state) => state.theme.mode);
 
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
   const totalPrice = items.reduce(
@@ -20,139 +44,471 @@ function Checkout() {
 
   if (items.length === 0) {
     return (
-      <main className="flex min-h-[calc(100vh-72px)] items-center justify-center px-4 py-10">
-        <div className="w-full max-w-md rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm">
-          <h1 className="text-2xl font-bold text-gray-950">Your cart is empty</h1>
-          <p className="mt-3 text-sm leading-6 text-gray-500">
-            Add some products to your cart, then come back here to checkout.
-          </p>
-          <Link
-            to="/"
-            className="mt-6 inline-flex rounded-md bg-gray-950 px-5 py-3 font-semibold text-white transition hover:bg-emerald-600"
+      <Box
+        sx={{
+          minHeight: "calc(100vh - 80px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          bgcolor: themeMode === "dark" ? "#0f172a" : "#f8fafc",
+          py: 6,
+        }}
+      >
+        <Paper
+          elevation={3}
+          sx={{
+            maxWidth: 500,
+            textAlign: "center",
+            p: 6,
+            borderRadius: 4,
+            background:
+              themeMode === "dark"
+                ? "linear-gradient(135deg, #1e293b 0%, #334155 100%)"
+                : "linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)",
+            border: `1px solid ${themeMode === "dark" ? "#334155" : "#e2e8f0"}`,
+          }}
+        >
+          <ShoppingCartOutlined
+            sx={{ fontSize: 80, color: "#8b5cf6", mb: 3 }}
+          />
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 700,
+              mb: 2,
+              color: themeMode === "dark" ? "#f1f5f9" : "#1e293b",
+            }}
           >
-            Back to products
+            سبد خرید شما خالی است
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              mb: 4,
+              color: themeMode === "dark" ? "#94a3b8" : "#64748b",
+            }}
+          >
+            محصولاتی به سبد خرید خود اضافه کنید تا بتوانید خرید را تکمیل کنید.
+          </Typography>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Button
+              variant="contained"
+              size="large"
+              startIcon={<ArrowBack />}
+              sx={{
+                bgcolor: "#8b5cf6",
+                px: 4,
+                py: 1.5,
+                fontSize: "1rem",
+                fontWeight: 600,
+                gap: "4px",
+                "&:hover": {
+                  bgcolor: "#7c3aed",
+                },
+              }}
+            >
+              بازگشت به فروشگاه
+            </Button>
           </Link>
-        </div>
-      </main>
+        </Paper>
+      </Box>
     );
   }
 
   return (
-    <main className="px-4 py-10">
-      <div className="mb-8 flex flex-col gap-3 text-left sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-950">Checkout</h1>
-          <p className="mt-2 text-sm text-gray-500">
-            {totalItems} item{totalItems > 1 ? "s" : ""} in your cart
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => dispatch(clearCart())}
-          className="rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
+    <Box
+      sx={{
+        minHeight: "calc(100vh - 80px)",
+        bgcolor: themeMode === "dark" ? "#0f172a" : "#f8fafc",
+        py: 4,
+      }}
+    >
+      <Container maxWidth="lg">
+        {/* Header */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            alignItems: { xs: "flex-start", sm: "center" },
+            mb: 4,
+            gap: 2,
+          }}
         >
-          Clear cart
-        </button>
-      </div>
-
-      <section className="grid gap-6 lg:grid-cols-[1fr_320px]">
-        <div className="flex flex-col gap-4">
-          {items.map((item) => (
-            <article
-              key={item.id}
-              className="grid gap-4 rounded-lg border border-gray-200 bg-white p-4 text-left shadow-sm sm:grid-cols-[120px_1fr]"
+          <Box>
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: 700,
+                color: themeMode === "dark" ? "#f1f5f9" : "#1e293b",
+                mb: 1,
+              }}
             >
-              <div className="flex h-32 items-center justify-center rounded-lg bg-gray-50 p-4">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="h-full w-full object-contain"
-                />
-              </div>
+              سبد خرید شما
+            </Typography>
+            <Typography
+              variant="body1"
+              sx={{ color: themeMode === "dark" ? "#94a3b8" : "#64748b" }}
+            >
+              {totalItems} محصول در سبد خرید شما
+            </Typography>
+          </Box>
 
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
-                  <div>
-                    <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
-                      {item.category}
-                    </span>
-                    <h2 className="mt-3 text-base font-semibold leading-7 text-gray-950">
-                      {item.title}
-                    </h2>
-                  </div>
-
-                  <p className="text-lg font-bold text-gray-950">
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 pt-4">
-                  <div className="flex items-center overflow-hidden rounded-md border border-gray-300">
-                    <button
-                      type="button"
-                      onClick={() => dispatch(decreaseQuantity(item.id))}
-                      className="h-10 w-10 text-lg font-semibold text-gray-700 transition hover:bg-gray-100"
-                    >
-                      -
-                    </button>
-                    <span className="flex h-10 min-w-12 items-center justify-center border-x border-gray-300 px-4 font-semibold text-gray-950">
-                      {item.quantity}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => dispatch(increaseQuantity(item.id))}
-                      className="h-10 w-10 text-lg font-semibold text-gray-700 transition hover:bg-gray-100"
-                    >
-                      +
-                    </button>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => dispatch(removeFromCart(item.id))}
-                    className="text-sm font-semibold text-red-600 transition hover:text-red-700"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <aside className="h-fit rounded-lg border border-gray-200 bg-white p-5 text-left shadow-sm">
-          <h2 className="text-lg font-bold text-gray-950">Order summary</h2>
-
-          <div className="mt-5 flex flex-col gap-3 text-sm text-gray-600">
-            <div className="flex justify-between">
-              <span>Items</span>
-              <span>{totalItems}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Subtotal</span>
-              <span>${totalPrice.toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Shipping</span>
-              <span>Free</span>
-            </div>
-          </div>
-
-          <div className="mt-5 flex justify-between border-t border-gray-100 pt-5 text-lg font-bold text-gray-950">
-            <span>Total</span>
-            <span>${totalPrice.toFixed(2)}</span>
-          </div>
-
-          <button
-            type="button"
-            className="mt-6 w-full rounded-md bg-gray-950 px-5 py-3 font-semibold text-white transition hover:bg-emerald-600"
+          <Button
+            variant="outlined"
+            color="error"
+            startIcon={<DeleteSweep />}
+            onClick={() => dispatch(clearCart())}
+            sx={{
+              borderWidth: 2,
+              fontWeight: 600,
+              gap: "4px",
+              "&:hover": {
+                borderWidth: 2,
+                bgcolor: "rgba(239, 68, 68, 0.1)",
+              },
+            }}
           >
-            Pay now
-          </button>
-        </aside>
-      </section>
-    </main>
+            پاک کردن سبد
+          </Button>
+        </Box>
+
+        {/* Cart Items and Summary */}
+        <div className="grid gap-6 lg:grid-cols-[1fr_380px]">
+          {/* Cart Items */}
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+            {items.map((item) => (
+              <Card
+                key={item.id}
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  borderRadius: 3,
+                  border: `1px solid ${themeMode === "dark" ? "#334155" : "#e2e8f0"}`,
+                  background:
+                    themeMode === "dark"
+                      ? "linear-gradient(135deg, #1e293b 0%, #334155 100%)"
+                      : "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    boxShadow:
+                      themeMode === "dark"
+                        ? "0 10px 30px rgba(139, 92, 246, 0.2)"
+                        : "0 10px 30px rgba(124, 58, 237, 0.15)",
+                    borderColor: "#8b5cf6",
+                  },
+                }}
+              >
+                {/* Product Image */}
+                <Box
+                  sx={{
+                    width: { xs: "100%", sm: 180 },
+                    height: { xs: 200, sm: "auto" },
+                    bgcolor: themeMode === "dark" ? "#0f172a" : "#f1f5f9",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    p: 3,
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    image={item.image}
+                    alt={item.title}
+                    sx={{
+                      maxHeight: 150,
+                      maxWidth: "100%",
+                      objectFit: "contain",
+                    }}
+                  />
+                </Box>
+
+                {/* Product Details */}
+                <CardContent
+                  sx={{
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    p: 3,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                      mb: 2,
+                    }}
+                  >
+                    <Box sx={{ flex: 1 }}>
+                      <Chip
+                        label={item.category}
+                        size="small"
+                        sx={{
+                          bgcolor: "rgba(139, 92, 246, 0.15)",
+                          color: "#8b5cf6",
+                          fontWeight: 600,
+                          fontSize: "0.7rem",
+                          mb: 1.5,
+                        }}
+                      />
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: "1.1rem",
+                          color:
+                            themeMode === "dark" ? "#f1f5f9" : "#1e293b",
+                          mb: 1,
+                        }}
+                      >
+                        {item.title}
+                      </Typography>
+                    </Box>
+
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: 700,
+                        color: "#10b981",
+                        fontSize: "1.3rem",
+                        ml: 2,
+                      }}
+                    >
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </Typography>
+                  </Box>
+
+                  <Divider sx={{ my: 2 }} />
+
+                  {/* Quantity Controls */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ButtonGroup
+                      variant="outlined"
+                      sx={{
+                        "& .MuiButton-root": {
+                          borderColor:
+                            themeMode === "dark" ? "#475569" : "#cbd5e1",
+                          color:
+                            themeMode === "dark" ? "#e2e8f0" : "#334155",
+                        },
+                      }}
+                    >
+                      <IconButton
+                        size="small"
+                        onClick={() => dispatch(decreaseQuantity(item.id))}
+                        sx={{
+                          borderRadius: 0,
+                          "&:hover": {
+                            bgcolor:
+                              themeMode === "dark"
+                                ? "rgba(139, 92, 246, 0.1)"
+                                : "rgba(139, 92, 246, 0.05)",
+                          },
+                        }}
+                      >
+                        <Remove />
+                      </IconButton>
+                      <Box
+                        sx={{
+                          px: 3,
+                          py: 1,
+                          display: "flex",
+                          alignItems: "center",
+                          fontWeight: 700,
+                          fontSize: "1rem",
+                          borderLeft: `1px solid ${themeMode === "dark" ? "#475569" : "#cbd5e1"}`,
+                          borderRight: `1px solid ${themeMode === "dark" ? "#475569" : "#cbd5e1"}`,
+                          color:
+                            themeMode === "dark" ? "#f1f5f9" : "#1e293b",
+                        }}
+                      >
+                        {item.quantity}
+                      </Box>
+                      <IconButton
+                        size="small"
+                        onClick={() => dispatch(increaseQuantity(item.id))}
+                        sx={{
+                          borderRadius: 0,
+                          "&:hover": {
+                            bgcolor:
+                              themeMode === "dark"
+                                ? "rgba(139, 92, 246, 0.1)"
+                                : "rgba(139, 92, 246, 0.05)",
+                          },
+                        }}
+                      >
+                        <Add />
+                      </IconButton>
+                    </ButtonGroup>
+
+                    <Button
+                      variant="text"
+                      color="error"
+                      startIcon={<Delete />}
+                      onClick={() => dispatch(removeFromCart(item.id))}
+                      sx={{
+                        fontWeight: 600,
+                        gap: "4px",
+                        "&:hover": {
+                          bgcolor: "rgba(239, 68, 68, 0.1)",
+                        },
+                      }}
+                    >
+                      حذف
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Card>
+            ))}
+          </Box>
+
+          {/* Order Summary */}
+          <Paper
+            elevation={3}
+            sx={{
+              height: "fit-content",
+              position: "sticky",
+              top: 100,
+              p: 3,
+              borderRadius: 3,
+              background:
+                themeMode === "dark"
+                  ? "linear-gradient(135deg, #1e293b 0%, #334155 100%)"
+                  : "linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%)",
+              border: `1px solid ${themeMode === "dark" ? "#334155" : "#e2e8f0"}`,
+            }}
+          >
+            <Typography
+              variant="h5"
+              sx={{
+                fontWeight: 700,
+                mb: 3,
+                color: themeMode === "dark" ? "#f1f5f9" : "#1e293b",
+              }}
+            >
+              خلاصه سفارش
+            </Typography>
+
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 3 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  color: themeMode === "dark" ? "#94a3b8" : "#64748b",
+                }}
+              >
+                <Typography>تعداد محصولات:</Typography>
+                <Typography fontWeight={600}>{totalItems}</Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  color: themeMode === "dark" ? "#94a3b8" : "#64748b",
+                }}
+              >
+                <Typography>جمع جزء:</Typography>
+                <Typography fontWeight={600}>
+                  ${totalPrice.toFixed(2)}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  color: themeMode === "dark" ? "#94a3b8" : "#64748b",
+                }}
+              >
+                <Typography>هزینه ارسال:</Typography>
+                <Chip label="رایگان" size="small" color="success" />
+              </Box>
+            </Box>
+
+            <Divider sx={{ my: 3 }} />
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 3,
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 700,
+                  color: themeMode === "dark" ? "#f1f5f9" : "#1e293b",
+                }}
+              >
+                مجموع:
+              </Typography>
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: 700, color: "#10b981" }}
+              >
+                ${totalPrice.toFixed(2)}
+              </Typography>
+            </Box>
+
+            <Button
+              variant="contained"
+              fullWidth
+              size="large"
+              startIcon={<Payment />}
+              sx={{
+                bgcolor: "#8b5cf6",
+                py: 1.5,
+                fontSize: "1.1rem",
+                fontWeight: 700,
+                gap: "4px",
+                "&:hover": {
+                  bgcolor: "#7c3aed",
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 10px 20px rgba(139, 92, 246, 0.4)",
+                },
+                transition: "all 0.3s ease",
+              }}
+            >
+              پرداخت
+            </Button>
+
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <Button
+                variant="outlined"
+                fullWidth
+                size="large"
+                startIcon={<ArrowBack />}
+                sx={{
+                  mt: 2,
+                  borderColor: themeMode === "dark" ? "#475569" : "#cbd5e1",
+                  color: themeMode === "dark" ? "#e2e8f0" : "#334155",
+                  py: 1.5,
+                  fontWeight: 600,
+                  gap: "4px",
+                  "&:hover": {
+                    borderColor: "#8b5cf6",
+                    bgcolor:
+                      themeMode === "dark"
+                        ? "rgba(139, 92, 246, 0.1)"
+                        : "rgba(139, 92, 246, 0.05)",
+                  },
+                }}
+              >
+                ادامه خرید
+              </Button>
+            </Link>
+          </Paper>
+        </div>
+      </Container>
+    </Box>
   );
 }
 

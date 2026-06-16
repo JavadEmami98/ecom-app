@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Box, Skeleton, Alert } from "@mui/material";
 import ProductCard from "./ProductCard";
 
 function ProductGrid() {
@@ -22,12 +23,14 @@ function ProductGrid() {
 
   if (loading) {
     return (
-      <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4   bg-white dark:bg-slate-800 dark:border-slate-600">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 8 }).map((_, index) => (
-          <div
-            key={index}
-            className="h-96 animate-pulse rounded-lg border border-gray-200 bg-gray-100"
-          />
+          <Box key={index}>
+            <Skeleton variant="rectangular" height={220} sx={{ borderRadius: 2, mb: 2 }} />
+            <Skeleton variant="text" height={30} sx={{ mb: 1 }} />
+            <Skeleton variant="text" height={20} sx={{ mb: 1 }} />
+            <Skeleton variant="text" height={20} width="60%" />
+          </Box>
         ))}
       </div>
     );
@@ -35,14 +38,20 @@ function ProductGrid() {
 
   if (error) {
     return (
-      <div className="mt-8 rounded-lg border border-red-200 bg-red-50 p-5 text-red-700">
+      <Alert 
+        severity="error" 
+        sx={{ 
+          borderRadius: 2,
+          fontSize: '1rem'
+        }}
+      >
         {error}
-      </div>
+      </Alert>
     );
   }
 
   return (
-    <div className="mt-8 grid grid-cols-1 gap-6 px-2 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

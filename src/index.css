@@ -270,3 +270,25 @@ html.dark a {
 html.dark a:hover {
   color: #f1f5f9;
 }
+
+/* Persian Date Picker Styles */
+.rmdp-wrapper {
+  font-family: IRANSansfa !important;
+  direction: rtl;
+}
+
+.rmdp-calendar {
+  font-family: IRANSansfa !important;
+}
+
+.rmdp-day-picker {
+  font-family: IRANSansfa !important;
+}
+
+.rmdp-header {
+  font-family: IRANSansfa !important;
+}
+
+.rmdp-input {
+  font-family: IRANSansfa !important;
+}
