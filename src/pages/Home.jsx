@@ -14,7 +14,7 @@ function Home() {
       }}
     >
       <Container maxWidth="lg">
-        {/* Hero Section */}
+      
         <Paper 
           elevation={0}
           sx={{ 
@@ -54,7 +54,7 @@ function Home() {
           </Typography>
         </Paper>
 
-        {/* Featured Products Swiper */}
+
         <Box sx={{ mb: 6 }}>
           <ProductSwiper />
         </Box>
